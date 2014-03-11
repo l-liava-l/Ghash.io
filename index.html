@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+        <script type="text/javascript" src="js/lib/jq.js"></script>
+        <script type="text/javascript" src="js/lib/hmac-sha256.js"></script>
+        <script type="text/javascript" src="js/lib/enc-base64-min.js"></script>
+
+        <link type="text/css" rel="stylesheet" href="css/index.css">
+        <title>Miner status</title>
+    </head>
+    <body>
+
+        <div class="rateValue_block">
+            <button type="button" id="Th" class="select" name="Th">Th</button>
+            <button type="button" id="Gh" name="Gh">Gh</button>
+            <button type="button" id="Mh" name="Mh">Mh</button>
+        </div>
+
+        <div class="hashRate_block">
+            <div><span>5 min</span><div class="last5m"></div></div>
+            <div class="light"><span>15 min</span><div class="last15m"></div></div>
+            <div><span>1 hour</span><div class="last1h"></div></div>
+            <div class="light"><span>1 day</span><div  class="last1d"></div></div>
+        </div>
+
+        <div class="setMinHr_block">
+            <span>Will be Alert when hash rate in 5 min less this value:</span>
+            <input type="number"  name='minHashRate' value="0">
+            <button type="button">set</button>
+        </div>
+
+
+
+
+        <form class="sendOptions">
+            <div>
+                <span>API key:</span>
+                <input type="text" class="form_input" name="api_key" value="">
+            </div>
+            <div>
+                <span>API secret:</span>
+                <input type="text" class="form_input" name="api_secret" value="">
+            </div>
+            <div>
+                <span>User name:</span>
+                <input type="text" class="form_input" name="userName" value="">
+            </div>
+            <div class="pageButton_block">
+                <button type="submit" class="form_button">ok</button>
+                <button class="lock_form">lock</button>
+            </div>
+        </form>
+
+
+
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+
+    </body>
+</html>
