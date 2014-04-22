@@ -18,6 +18,7 @@ input {
   display: inherit;
   min-height: 2em;
   max-height: 2em;
+  margin-top: 10px;
 }
 .rateMeasure_block > button {
   font-size: 2.2em;
@@ -79,7 +80,8 @@ input {
   margin-left: 1em;
 }
 .setMinHr_block > button,
-.pageButton_block > input {
+.pageButton_block > input,
+.header > button {
   padding: 0.5em;
   font-size: 1.5em;
   min-width: 20%;
@@ -109,4 +111,12 @@ input {
 }
 .sendOptions > div input {
   float: left;
+}
+.header {
+  min-width: 100%;
+  margin-bottom: 10px;
+  min-height: 3em;
+}
+.header > button {
+  float: right;
 }

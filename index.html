@@ -12,7 +12,7 @@
 
         <script src="js/lib/angular.js"></script>
         <script src="js/lib/ngTouch.min.js"></script>
-        <script src="js/lib/restfull.js"></script>
+
 
         <link type="text/css" rel="stylesheet" href="css/index.css">
 
@@ -21,36 +21,49 @@
 
     <body lang="en" ng-controller="dataCtrl">
 
-        <div class="rateMeasure_block">
-            <button ng-repeat="i in measure.buttons" class="{{i.style}}" ng-click="setActive(i)">
-                {{i.name}}
-            </button>
+    <div class="page1"
+         ng-show="!showPage">
+
+        <div class="header">
+
+            <button ng-click="showPage=true">Settings</button>
         </div>
+
+
 
         <div class="hashRate_block">
 
             <div>
                 <span>5 min</span>
                 <div>
+                    {{round(generalPower.last5m)}}
                 </div>
             </div>
             <div class="light">
                 <span>15 min</span>
                 <div>
+                    {{round(generalPower.last15m)}}
                 </div>
             </div>
             <div>
                 <span>1 hour</span>
                 <div>
+                    {{round(generalPower.last1h)}}
                 </div>
             </div>
             <div class="light">
                 <span>1 day</span>
                 <div>
+                    {{round(generalPower.last1d)}}
                 </div>
             </div>
         </div>
 
+        <div class="rateMeasure_block">
+            <button ng-repeat="i in measure.buttons" class="{{i.style}}" ng-click="setActive(i)">
+                {{i.name}}
+            </button>
+        </div>
 
 
         <div class="setMinHr_block">
@@ -59,7 +72,22 @@
             <button type="button">set</button>
         </div>
 
-        <div class="sendOptions">
+
+
+    </div>
+
+    <div class="page2"
+         ng-show="showPage">
+
+        <div class="header">
+
+            <button ng-click="showPage=false">app</button>
+        </div>
+        <div class="sendOptions" >
+            <div>
+                <span>Login:</span>
+                <input  ng-model="session.userName" required>
+            </div>
             <div>
                 <span>API key:</span>
                 <input  ng-model="session.api_key" required>
@@ -68,14 +96,15 @@
                 <span>API secret:</span>
                 <input  ng-model="session.api_secret"  required>
             </div>
-            <div>
-                <span>User name:</span>
-                <input  ng-model="session.userName" required>
-            </div>
+
             <div class="pageButton_block">
-               <input type="submit" class="form_button" ng-click="save()">
+               <input type="submit" class="form_button" ng-click="saveSettings()">
             </div>
         </div>
+
+        </div>
+
+        
 
 
         <script type="text/javascript" src="cordova.js"></script>
