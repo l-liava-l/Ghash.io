@@ -1,38 +1,33 @@
 <!DOCTYPE html>
 <html ng-app="ghashStatusApp">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1,
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1,
         maximum-scale=1, minimum-scale=1, width=device-width, height=device-height,
         target-densitydpi=device-dpi" />
 
-        <script src="js/lib/hmac-sha256.js"></script>
-        <script src="js/lib/enc-base64-min.js"></script>
+    <script src="js/lib/hmac-sha256.js"></script>
+    <script src="js/lib/enc-base64-min.js"></script>
 
-        <script src="js/lib/angular.js"></script>
-        <script src="js/lib/ngTouch.min.js"></script>
+    <script src="js/lib/angular.js"></script>
+    <script src="js/lib/ngTouch.min.js"></script>
 
 
-        <link type="text/css" rel="stylesheet" href="css/index.css">
+    <link type="text/css" rel="stylesheet" href="css/index.css">
 
-        <title>Miner status</title>
-    </head>
+    <title>Miner status</title>
+</head>
 
-    <body lang="en" ng-controller="dataCtrl">
+<body lang="en" ng-controller="dataCtrl">
 
-    <div class="page1"
-         ng-show="!showPage">
+    <div class="page1" ng-show="!showPage">
 
-        <div class="header">
-
-            <button ng-click="showPage=true">Settings</button>
+        <div class="header block">
+            <button class="blueButton" ng-click="showPage=true">Settings</button>
         </div>
 
-
-
-        <div class="hashRate_block">
-
+        <div class="hashRate block">
             <div>
                 <span>5 min</span>
                 <div>
@@ -59,55 +54,56 @@
             </div>
         </div>
 
-        <div class="rateMeasure_block">
-            <button ng-repeat="i in measure.buttons" class="{{i.style}}" ng-click="setActive(i)">
+        <div class="rateMeasure block">
+            <button ng-repeat="i in measure.buttons" class="{{i.style}} checkButton" ng-click="setActive(i)">
                 {{i.name}}
             </button>
         </div>
 
-
-        <div class="setMinHr_block">
+        <div class="setMinHr block">
             <span>Will be Alert when hash rate in 5 min less this value:</span>
             <input type="number"  name='minHashRate' value="{{s.minHR}}">
-            <button type="button">set</button>
+            <button class="blueButton" type="button">reset</button>
         </div>
-
-
 
     </div>
 
-    <div class="page2"
-         ng-show="showPage">
 
-        <div class="header">
 
-            <button ng-click="showPage=false">app</button>
-        </div>
-        <div class="sendOptions" >
-            <div>
-                <span>Login:</span>
-                <input  ng-model="session.userName" required>
-            </div>
-            <div>
-                <span>API key:</span>
-                <input  ng-model="session.api_key" required>
-            </div>
-            <div>
-                <span>API secret:</span>
-                <input  ng-model="session.api_secret"  required>
-            </div>
+    <div class="page2" ng-show="showPage">
 
-            <div class="pageButton_block">
-               <input type="submit" class="form_button" ng-click="saveSettings()">
-            </div>
+        <div class="header block">
+            <button class="blueButton" ng-click="showPage=false">Back</button>
         </div>
 
+
+
+
+
+
+
+        <div class="sendOptions block">
+
+            <div class="work block">
+            <input type="button" value="show workers" class="checkButton  {{session.workers}}" ng-click="session.workers=!session.workers">
+            </div>
+            <div class="update block">
+            <span>Update (sec)</span><input placeholder="5 sec"  ng-model="session.time" class="optInput time" required>
+            </div>
+            </br>
+            <input placeholder="Login*"  ng-model="session.userName" class="optInput" value=" " required>
+            <input placeholder="API key*"  ng-model="session.api_key" class="optInput" required>
+            <input placeholder="API secret*"  ng-model="session.api_secret" class="optInput"  required>
+
+            <button class="blueButton" ng-click="saveSettings()">Применить!</button>
         </div>
+
+    </div>
 
         
 
 
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/controller.js"></script>
-    </body>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/controller.js"></script>
+</body>
 </html>

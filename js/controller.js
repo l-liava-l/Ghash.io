@@ -1,112 +1,113 @@
 var app = angular.module("ghashStatusApp", ['ngTouch']);
 
-app.controller("dataCtrl", function($scope, $http) {
+    app.controller("dataCtrl", function ($scope, $http) {
 
-    function GenButtons(id) {
+        function loadSettings() {
 
-        this.buttons = [
-            {"id": 0, "name": "Th", "len": 1e6},
-            {"id": 1, "name": "Gh", "len": 1e3},
-            {"id": 2, "name": "Mh", "len": 1e1},
-            {"id": 3, "name": "Kh", "len": 1}
-        ];
+            var session = {};
 
-        this.now = this.buttons[id];
-        this.len = this.now.len;
-        this.now.style='active';
-    }
+            for (var i in window.localStorage) {
+                session[i] = window.localStorage[i] == "undefined"? "": window.localStorage[i];
+            }
+            return session;
+        }
 
-    ($scope.setActive = function (button) {
+        $scope.session = loadSettings();
 
-        window.localStorage.setItem("measure", button.id || 0);
-        $scope.measure = new GenButtons(button.id || 0);
+        function GenButtons(id) {
 
-    })({"id": window.localStorage.measure});
+            this.buttons = [
+                {"id": 0, "name": "Th", "len": 1e6},
+                {"id": 1, "name": "Gh", "len": 1e3},
+                {"id": 2, "name": "Mh", "len": 1e1},
+                {"id": 3, "name": "Kh", "len": 1}
+            ];
+
+            this.now = this.buttons[id];
+            this.len = this.now.len;
+            this.now.style = 'active';
+        }
+
+        ($scope.setActive = function (button) {
+
+            window.localStorage.setItem("measure", button.id || 0);
+            $scope.measure = new GenButtons(button.id || 0);
+
+        })({"id": window.localStorage.measure});
+
+
+
+        $scope.round = function (data) {
+            if (!data) return "No data!";
+            return Math.round(data / $scope.measure.len);
+        };
+
+        function Requester() {
+
+            var genParamObj = function () {
+
+                var S = window.localStorage,
+                    nonce = Date.now(),
+                    signature = genSig();
+
+                function genSig() {
+
+                    var message = (nonce + S.userName + S.api_key) || "null",
+                        hash = CryptoJS.HmacSHA256(message, S.api_secret || "null");
+
+                    return CryptoJS.enc.Hex.stringify(hash).toUpperCase();
+                }
+
+                return  {
+                    key: S.api_key,
+                    signature: signature,
+                    nonce: nonce
+                };
+            };
+
+            this.getPower = function (url, model) {
+                $http.post(url, genParamObj())
+                    .success(function (data) {
+                        $scope[model] = data;
+                    });
+            };
+        }
+
 
 
 ////////////////////////todo fixme refractoring maybe
 
-    $scope.saveSettings = function() {
-        for(var i in this.session) {
-            window.localStorage.setItem(i, this.session[i]);
-        }
-    };
-
-    function loadSettings() {
-        for(var i in window.localStorage) {
-            window.sessionStorage[i] = window.localStorage[i];
-        }
-        return window.sessionStorage;
-    }
-
-    $scope.session = loadSettings();
-
-////////////////////////////////////
+        $scope.saveSettings = function () {
+            for (var i in this.session) {
+                window.localStorage.setItem(i, this.session[i]);
+            }
+        };
 
 
-    $scope.round = function(data) {
 
-        return Math.round(data / $scope.measure.len);
 
-    };
 
-/////////////////////////////////
+        (function () {
+            var workersPowerUrl = "https://cex.io/api/ghash.io/workers",
+                generalPowerUrl = "https://cex.io/api/ghash.io/hashrate";
 
-    function Requester() {
 
-        var genParamObj = function () {
+            var r = new Requester();
 
-            var s = window.localStorage,
-                nonce = Date.now(),
-                signature = genSig();
+            req();
+            setInterval(function () {
+                req();
+            },  $scope.session.time * 1000 || 5000);
 
-            function genSig() {
+            function req() {
+                r.getPower(generalPowerUrl, "generalPower");
 
-                var message = nonce + s.userName + s.api_key,
-                    hash = CryptoJS.HmacSHA256(message, s.api_secret);
-
-                return CryptoJS.enc.Hex.stringify(hash).toUpperCase();
+                if ($scope.needWorkers === true) {
+                    r.getPower(workersPowerUrl, "workersPower");
+                }
             }
 
-            return  {
-                key: s.api_key,
-                signature: signature,
-                nonce: nonce
-            };
-        };
-
-        this.getPower = function (url, model) {
-            $http.post(url, genParamObj())
-                .success(function(data){
-                    $scope[model] = data;
-                });
-        };
-    }
-
-    (function() {
-        var workersPowerUrl = "https://cex.io/api/ghash.io/workers",
-            generalPowerUrl = "https://cex.io/api/ghash.io/hashrate";
+        })();
 
 
-        var r = new Requester();
-
-        req();
-        setInterval(function(){
-        req();
-        }, 5000);
-
-        function req() {
-
-            r.getPower(generalPowerUrl, "generalPower");
-            //  r.getPower(workersPowerUrl, "workersPower");
-        }
-
-    })();
-
-
-
-
-
-
-
-});
+    });
