@@ -1,3 +1,7 @@
+/**
+ * Created by lev on 26.11.13.
+ */
+
 var app = angular.module("ghashStatusApp", ['ngTouch']);
 
     app.controller("dataCtrl", function ($scope, $http) {
@@ -36,7 +40,6 @@ var app = angular.module("ghashStatusApp", ['ngTouch']);
         })({"id": window.localStorage.measure});
 
 
-
         $scope.round = function (data) {
             if (!data) return "No data!";
             return Math.round(data / $scope.measure.len);
@@ -73,19 +76,11 @@ var app = angular.module("ghashStatusApp", ['ngTouch']);
             };
         }
 
-
-
-////////////////////////todo fixme refractoring maybe
-
         $scope.saveSettings = function () {
             for (var i in this.session) {
                 window.localStorage.setItem(i, this.session[i]);
             }
         };
-
-
-
-
 
         (function () {
             var workersPowerUrl = "https://cex.io/api/ghash.io/workers",
