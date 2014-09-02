@@ -21,6 +21,7 @@ var app = angular.module("ghashStatusApp", ['ngTouch']);
         function GenButtons(id) {
 
             this.buttons = [
+
                 {"id": 0, "name": "Th", "len": 1e6},
                 {"id": 1, "name": "Gh", "len": 1e3},
                 {"id": 2, "name": "Mh", "len": 1e1},
